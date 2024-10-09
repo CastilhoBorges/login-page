@@ -2,12 +2,19 @@
   "name": "login-page",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "back-end/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node back-end/server.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "login",
+    "authentication",
+    "express",
+    "web",
+    "node"
+  ],
+  "author": "Augusto Castilho",
   "license": "ISC",
   "dependencies": {
     "express": "^4.21.0"
