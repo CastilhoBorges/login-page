@@ -1,10 +1,14 @@
 "use strict";
 
 const form = document.querySelector("form");
-const senha = document.querySelector("#password").value;
 
 // Verificar dados antes de mandar para o backend
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const email = document.querySelector("#email").value;
+  const senha = document.querySelector("#password").value; // Atualizando o valor da senha aqui
+
   // Expressão regular para validar a senha
   const senhaPadrao =
     /^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&*])[A-Za-z0-9@#$%^&*]{8,16}$/;
@@ -12,18 +16,10 @@ form.addEventListener("submit", (event) => {
   // Validação da senha
   if (!senha.match(senhaPadrao)) {
     alert(
-      "Sua senha deve conter pelo menos 1 letra maiuscula, um numero, um caractere especial e entre 8 à 16 caracteres"
+      "Sua senha deve conter pelo menos 1 letra maiúscula, um número, um caractere especial e entre 8 à 16 caracteres"
     );
-    event.preventDefault();
-    return;
+    return; // Não envia os dados se a senha não for válida
   }
-});
-
-// Enviando os dados para o server como JSON e recebendo
-form.addEventListener("submit", async (event) => {
-  event.preventDefault();
-
-  const email = document.querySelector("#email").value;
 
   // Criando o JSON
   const dadosDocadastro = {
@@ -32,7 +28,7 @@ form.addEventListener("submit", async (event) => {
   };
 
   try {
-    // Enviar o JSON ao servidor como string 
+    // Enviar o JSON ao servidor como string
     const response = await fetch("/submit", {
       method: "POST",
       headers: {
@@ -41,7 +37,7 @@ form.addEventListener("submit", async (event) => {
       body: JSON.stringify(dadosDocadastro),
     });
 
-    // Recebe o resultado do servidor 
+    // Recebe o resultado do servidor
     const result = await response.text();
     console.log(result);
   } catch (error) {
