@@ -7,7 +7,8 @@ form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const email = document.querySelector("#email").value;
-  const senha = document.querySelector("#password").value; // Atualizando o valor da senha aqui
+  const senha = document.querySelector("#password").value;
+  // Atualizando o valor da senha aqui
 
   // Expressão regular para validar a senha
   const senhaPadrao =
@@ -38,9 +39,13 @@ form.addEventListener("submit", async (event) => {
     });
 
     // Recebe o resultado do servidor
-    const result = await response.text();
-    console.log(result);
+    if (response.ok) {
+      const result = await response.text();
+      console.log(result);
+    } else {
+      console.error(`Erro no envio: ${response.status}`);
+    }
   } catch (error) {
-    console.error("Erro ao enviar dados: ", error);
+    console.error("Erro ao enviar dados: ", error.message);
   }
 });
