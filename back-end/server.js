@@ -2,8 +2,8 @@
 
 // Importando dependencias
 const express = require("express");
-
 const path = require("path");
+const bcrypt = require("bcrypt");
 
 // Instancia do Express
 const app = express();
@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3150;
 // Middleware para analisar os dados JSON
 app.use(express.json());
 
-
+// Enviar arquivos para o front
 app.use(express.static(path.join(__dirname, "../front-end")));
 
 app.get("/", (req, res) => {
@@ -22,13 +22,20 @@ app.get("/", (req, res) => {
 });
 
 // Rota para tratar os dados e enviar para o banco
-app.post("/submit", (req, res) => {
+app.post("/submit", async (req, res) => {
   const { email, senha } = req.body;
-
   // Vou definir a logica a baixo
-  console.log(`Email: ${email}, Senha: ${senha}`);
+  try {
+    const saltRounds = 12;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashSenha = await bcrypt.hash(senha, salt);
 
-  res.send("Cadastro Efetuado");
+    console.log(`Email: ${email}, Senha: ${hashSenha}, Salt: ${salt}`);
+    res.send(`Cadastro efetuado!`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erro no cadastro");
+  }
 });
 
 // Rota para buscar os dados no banco
