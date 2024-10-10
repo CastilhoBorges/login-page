@@ -8,17 +8,31 @@ body {
   margin: 0;
 }
 
-.form-container {
-  background-color: #fff;
-  padding: 20px;
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 colunas em desktop */
+  grid-template-rows: repeat(2, 1fr);    /* 2 linhas em desktop */
+  gap: 10px; /* Espaço entre os quadrantes */
+  width: 80%; /* Largura do grid */
+  max-width: 800px; /* Largura máxima do grid */
+  margin: auto; /* Centraliza o grid */
+  height: 80vh; /* Altura do grid proporcional à tela */
+}
+
+.quadrante {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 300px;
+  display: flex;
+  flex-direction: column; /* Permite empilhar elementos verticalmente */
+  justify-content: flex-start; /* Alinha os itens no início */
+  padding: 20px; /* Espaço interno */
+  box-sizing: border-box; /* Inclui o padding na largura total */
 }
 
 h2 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px; /* Menor espaço entre o título e o conteúdo */
   color: #333;
 }
 
@@ -29,7 +43,8 @@ label {
 }
 
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+input[type="text"] {
   width: 100%;
   padding: 10px;
   margin-bottom: 20px;
@@ -51,4 +66,12 @@ button {
 
 button:hover {
   background-color: #45a049;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .grid-container {
+      grid-template-columns: 1fr; /* Uma coluna em mobile */
+      grid-template-rows: auto;    /* Linhas automáticas */
+  }
 }
