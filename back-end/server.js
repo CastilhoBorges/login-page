@@ -4,6 +4,7 @@
 const express = require("express");
 const path = require("path");
 const bcrypt = require("bcrypt");
+const Usuario = require("/Programação/Projetos/login-page/mongoose");
 
 // Instancia do Express
 const app = express();
@@ -26,9 +27,22 @@ app.post("/submit", async (req, res) => {
   const { email, senha } = req.body;
   // Vou definir a logica a baixo
   try {
+    const usuarioExiste = await Usuario.findOne({ email: email });
+
+    if (usuarioExiste) {
+      return res.status(400).send("Email já cadastrado!");
+    }
+
     const saltRounds = 12;
     const salt = await bcrypt.genSalt(saltRounds);
     const hashSenha = await bcrypt.hash(senha, salt);
+
+    const novoUsuario = new Usuario({
+      email: email,
+      senha: hashSenha,
+    });
+
+    await novoUsuario.save();
 
     console.log(`Email: ${email}, Senha: ${hashSenha}, Salt: ${salt}`);
     res.send(`Cadastro efetuado!`);
