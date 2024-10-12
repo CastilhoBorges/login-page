@@ -10,7 +10,7 @@ const Usuario = require("/Programação/Projetos/login-page/mongoose");
 const app = express();
 
 // Definindo a porta
-const PORT = process.env.PORT || 3150;
+const PORT = process.env.PORT || 5000;
 
 // Middleware para analisar os dados JSON
 app.use(express.json());
@@ -30,7 +30,7 @@ app.post("/submit", async (req, res) => {
     const usuarioExiste = await Usuario.findOne({ email: email });
 
     if (usuarioExiste) {
-      return res.status(400).send("Email já cadastrado!");
+      return res.status(400).json({ message: "Email já cadastrado!" });
     }
 
     const saltRounds = 12;
@@ -44,11 +44,9 @@ app.post("/submit", async (req, res) => {
 
     await novoUsuario.save();
 
-    console.log(`Email: ${email}, Senha: ${hashSenha}, Salt: ${salt}`);
     res.send(`Cadastro efetuado!`);
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Erro no cadastro");
+    res.status(500).json({ message: "Erro no servidor" });
   }
 });
 
