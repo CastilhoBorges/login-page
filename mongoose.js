@@ -2,13 +2,9 @@ const mongoose = require("mongoose");
 
 mongoose
   .connect(
-    "mongodb+srv://castilho:01001101@castilhocluster0.hpr3m.mongodb.net/?retryWrites=true&w=majority&appName=CastilhoCluster0",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
+    "mongodb+srv://castilho:01001101@castilhocluster0.hpr3m.mongodb.net/?retryWrites=true&w=majority&appName=CastilhoCluster0"
   )
-  .then(() => console.log("Conectado ao MongoDB!"))
+  .then((res) => console.log('Conectado ao MongoDB'))
   .catch((error) => console.error("Erro ao conectar ao MongoDB:", error));
 
 const usuarioSchema = new mongoose.Schema({
