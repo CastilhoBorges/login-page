@@ -9,7 +9,6 @@ form.addEventListener("submit", async (event) => {
   const email = document.querySelector("#email");
   const senha = document.querySelector("#password");
   const p = document.querySelector("#respostaDeCadastro");
-  // Atualizando o valor da senha aqui
 
   // Expressão regular para validar a senha
   const senhaPadrao =
@@ -17,9 +16,11 @@ form.addEventListener("submit", async (event) => {
 
   // Validação da senha
   if (!senha.value.match(senhaPadrao)) {
-    alert(
-      "Sua senha deve conter pelo menos 1 letra maiúscula, um número, um caractere especial e entre 8 à 16 caracteres"
-    );
+    p.innerHTML =
+      "Sua senha deve conter pelo menos 1 letra maiúscula, um número, um caractere especial e entre 8 à 16 caracteres";
+    senha.value = "";
+    setTimeout(() => (p.innerText = ""), 3000);
+
     return; // Não envia os dados se a senha não for válida
   }
 
@@ -42,18 +43,17 @@ form.addEventListener("submit", async (event) => {
     // Recebe o resultado do servidor
     if (response.ok) {
       const result = await response.text();
-
       p.innerHTML = result;
       email.value = "";
       senha.value = "";
     } else {
-      console.error(`Erro no envio: ${response.status}`);
+      const errorResponse = await response.json();
+      p.innerHTML = errorResponse.message;
     }
 
     setTimeout(() => {
       p.innerText = "";
     }, 3000);
-    
   } catch (error) {
     console.error("Erro ao enviar dados: ", error.message);
   }
