@@ -51,16 +51,23 @@ app.post("/submit", async (req, res) => {
 });
 
 // Rota para buscar os dados no banco
-app.get("/search", (req, res) => {
-  const { query } = req.query;
+app.get("/search", async (req, res) => {
+  const email = req.query.email;
 
-  // Vou definir a logica a baixo
-  console.log(`Buscando por: ${query}`);
+  try {
+    const search = await Usuario.findOne({ email: email });
 
-  res.send(`Resultado para a busca por: ${query}`);
+    if (search) {
+      res.json(search);
+    } else {
+      res.status(404).send(`Usuario ${email} não encontrado`);
+    }
+  } catch (err) {
+    res.status(500).send("Erro ao buscar");
+  }
 });
 
 // Inicia o servidor
 app.listen(PORT, () => {
-  console.log(`Start server ${PORT}`);
+  console.log(`http://localhost:${PORT}`);
 });

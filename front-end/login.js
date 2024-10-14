@@ -1,8 +1,10 @@
 "use strict";
 
 const form = document.querySelector("form");
+const searchUsuario = document.querySelector("#searchButton");
+const searchInput = document.querySelector("#searchInput");
 
-// Verificar dados antes de mandar para o backend
+// Verificar dados de cadastro antes de mandar para o backend
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -56,5 +58,32 @@ form.addEventListener("submit", async (event) => {
     }, 3000);
   } catch (error) {
     console.error("Erro ao enviar dados: ", error.message);
+  }
+});
+
+// Buscar dados
+searchUsuario.addEventListener("click", async () => {
+  const usuarioSearch = searchInput.value;
+  const searchResults = document.querySelector("#searchResults");
+
+  const user = {
+    email: usuarioSearch,
+  };
+
+  const queryParams = new URLSearchParams(user).toString();
+  const url = `/search?${queryParams}`;
+
+  try {
+    const response = await fetch(url);
+
+    if (response.ok) {
+      const data = await response.json();
+      searchResults.innerHTML = data.email;
+    } else {
+      const errorMenssage = await response.text();
+      searchResults.innerHTML = errorMenssage;
+    }
+  } catch (err) {
+    console.log(`Erro ao buscar o usuario: ${err}`);
   }
 });
