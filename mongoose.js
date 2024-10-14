@@ -7,11 +7,13 @@ mongoose
   .then((res) => console.log('Conectado ao MongoDB'))
   .catch((error) => console.error("Erro ao conectar ao MongoDB:", error));
 
+// Definindo o padrõa 
 const usuarioSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   senha: { type: String, required: true },
 });
 
+// Criando a coleção Usuario no MongoDB
 const Usuario = mongoose.model("Usuario", usuarioSchema);
 
 module.exports = Usuario;
